@@ -10,14 +10,12 @@ def main():
 
     orksdict = bf.data(fromstring(orksxml))
 
-
     sharedEntries = orksdict[list(orksdict.keys())[0]][h+'sharedSelectionEntries'][h+'selectionEntry']
+    sharedProfiles = orksdict[list(orksdict.keys())[0]][h+'sharedProfiles'][h+'profile']
 
-    weapons = parseSharedEntries(sharedEntries)
+    return parseSharedEntries(sharedEntries, sharedProfiles)
 
-    return weapons
-
-def parseSharedEntries(sharedEntries):
+def parseSharedEntries(sharedEntries, sharedProfiles):
     profiles = {'Model':{}, 'Weapon':{}, 'Ability':{}, 'Wargear':{}}
 
     for entry in sharedEntries:
@@ -31,6 +29,10 @@ def parseSharedEntries(sharedEntries):
         else:
             continue
 
+    for p in sharedProfiles:
+        profile = parseProfile(p)
+        profiles[profile['typeName']][profile['name']] = profile
+
     return profiles
 
 def parseProfile(p):
@@ -38,10 +40,12 @@ def parseProfile(p):
     typeName = p['@typeName']
     pid = p['@id']
     characteristics = p[h+'characteristics'][h+'characteristic']
+    if (isinstance(characteristics, list) == False):
+        characteristics = [characteristics]
     stats = {}
-    for c in  p[h+'characteristics'][h+'characteristic']:
+    for c in  characteristics:
         try:
-            stats[c['@name']] = c['$']
+            stats[c['@name']] = c['$'].replace('\n', '')
         except:
             continue
     return ({'name': name, 'typeName': typeName, 'id': pid, 'stats': stats})
