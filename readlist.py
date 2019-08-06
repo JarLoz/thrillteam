@@ -1,4 +1,4 @@
-def main():
+def readlist():
     f = open("orklist.txt", "r")
     lines = f.readlines()
     f.close()

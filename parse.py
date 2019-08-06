@@ -3,7 +3,7 @@ from xml.etree.ElementTree import fromstring
 
 #header for some xml bullshit
 h = '{http://www.battlescribe.net/schema/catalogueSchema}'
-def main():
+def parse():
     f = open("../wh40k-killteam/Orks.cat", "r")
     orksxml = f.read()
     f.close()
@@ -45,7 +45,10 @@ def parseProfile(p):
     stats = {}
     for c in  characteristics:
         try:
-            stats[c['@name']] = c['$'].replace('\n', '')
+            if (isinstance(c['$'], str)):
+                stats[c['@name']] = c['$'].replace('\n', '')
+            else:
+                stats[c['@name']] = str(c['$'])
         except:
             continue
     return ({'name': name, 'typeName': typeName, 'id': pid, 'stats': stats})
