@@ -1,0 +1,11 @@
+Model: Ork Boy
+Weapon: Slugga
+Weapon: Choppa
+Ability: 'Ere We Go
+-
+Model: Nob
+Wargear: Cybork body
+Weapon: Slugga
+Weapon: Big Choppa
+Ability: 'Ere We Go
+Ability: Gitfinda Squig
