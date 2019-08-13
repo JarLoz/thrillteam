@@ -1,8 +1,24 @@
-from parse import parse
-from readlist import readlist
-from ork import Ork
+from thriller.parse import parse
+from thriller.readlist import readlist
+from thriller.ork import Ork
+from pgmagick import Image, DrawableText
 
 def main():
+    orks = createOrks()
+    for o in orks:
+        createCard(o)
+
+def createCard(ork):
+    template = Image('cardtemplate.png')
+    name = ork.name()
+    
+    template.fontPointsize(50)
+    drawableName = DrawableText(38, 84, name)
+    template.draw(drawableName)
+    template.write(name+'.png')
+
+
+def createOrks():
     orkdata = parse()
     orklist = readlist()
 
@@ -24,5 +40,6 @@ def main():
         orks.append(ork)
 
     return orks
+
 if (__name__ == "__main__"):
     main()

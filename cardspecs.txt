@@ -1,0 +1,8 @@
+width: 1039 px
+height: 744 px
+
+border: 36px
+
+Name: x=36 y=36 size=50p Sans
+
+resolution 300ppi
