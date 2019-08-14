@@ -2,6 +2,7 @@ from thriller.parse import parse
 from thriller.readlist import readlist
 from thriller.ork import Ork
 from pgmagick import Image, DrawableText
+from textwrap import wrap
 
 def main():
     orks = createOrks()
@@ -57,7 +58,60 @@ def createCard(ork):
             template.draw(DrawableText(846, weaponY, 'Yes'))
         weaponY += weaponOffset
 
+    # Wargear
+
+    wargearNames = []
+
+    for wargear in ork.wargear:
+        wargearName = wargear['name']
+        wargearNames.append(wargearName)
+        if (wargear['stats']['Ability'] != '_'):
+            abilities[wargearName] = wargear['stats']['Ability']
+
+    wargearString = "Wargear: " + ", ".join(wargearNames)
+    wargearStrings = wrap(wargearString, 50)
+
+    # Only two lines for wargear.
+    wargearY = 522
+    wargearOffset = 35
+    for i in range(min(len(wargearStrings), 2)):
+        template.draw(DrawableText(39, wargearY, wargearStrings[i]))
+        wargearY += wargearOffset
+
+    # Abilities
+
+    abilityNames = []
+
+    for ability in ork.abilities:
+        abilityName = ability['name']
+        abilityNames.append(abilityName)
+        abilities[abilityName] = ability['stats']['Description']
+
+    abilityString = "Abilities: " + ", ".join(abilityNames)
+    abilityStrings = wrap(abilityString, 50)
+
+    # Only four lines for abilities.
+    abilityY = 595
+    abilityOffset = 35
+    for i in range(min(len(abilityStrings), 4)):
+        template.draw(DrawableText(39, abilityY, abilityStrings[i]))
+        abilityY += abilityOffset
+
     template.write(name+'.png')
+
+    template = Image('cardtemplate-back.png')
+    template.fontPointsize(30)
+
+    # Backside of the card
+    abilityY = 117
+    abilityOffset = 35
+    for abilityName in abilities.keys():
+        abilityStrings = wrap(abilityName + ": " + abilities[abilityName], 60)
+        for string in abilityStrings:
+            template.draw(DrawableText(39, abilityY, string))
+            abilityY += abilityOffset
+        abilityY += 10
+    template.write(name +  '-back.png')
 
 
 def createOrks():

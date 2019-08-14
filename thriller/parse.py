@@ -20,11 +20,12 @@ def parseSharedEntries(sharedEntries, sharedProfiles):
 
     for entry in sharedEntries:
         if (h+'profiles' in entry.keys()):
+            entryName = entry['@name']
             profiledata = entry[h+'profiles'][h+'profile']
             if (isinstance(profiledata, list) == False):
                 profiledata = [profiledata]
             for p in profiledata:
-                profile = parseProfile(p)
+                profile = parseProfile(p, entryName)
                 profiles[profile['typeName']][profile['name']] = profile
         else:
             continue
@@ -35,9 +36,11 @@ def parseSharedEntries(sharedEntries, sharedProfiles):
 
     return profiles
 
-def parseProfile(p):
+def parseProfile(p, entryName=''):
     name = p['@name']
     typeName = p['@typeName']
+    if (typeName == 'Model' and entryName):
+        name = entryName
     pid = p['@id']
     characteristics = p[h+'characteristics'][h+'characteristic']
     if (isinstance(characteristics, list) == False):

@@ -9,3 +9,12 @@ Weapon: Slugga
 Weapon: Big Choppa
 Ability: 'Ere We Go
 Ability: Gitfinda Squig
+-
+Model: Meganob
+Weapon: Kombi-weapon
+Weapon: Kombi-weapon with Skorcha (Shoota)
+Weapon: Kombi-weapon with Skorcha (Skorcha)
+Weapon: Power Klaw
+Weapon: Stikkbombs
+Ability: 'Ere We Go
+Ability: Keepin' Order
