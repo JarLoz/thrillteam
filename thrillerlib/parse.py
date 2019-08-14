@@ -3,8 +3,10 @@ from xml.etree.ElementTree import fromstring
 
 #header for some xml bullshit
 h = '{http://www.battlescribe.net/schema/catalogueSchema}'
-def parse(datafilename):
-    f = open(datafilename, "r")
+s = '{http://www.battlescribe.net/schema/gameSystemSchema}'
+
+def parse(datapath, faction):
+    f = open(datapath + faction + '.cat', "r")
     orksxml = f.read()
     f.close()
 
@@ -14,10 +16,15 @@ def parse(datafilename):
     sharedProfiles = orksdict[list(orksdict.keys())[0]][h+'sharedProfiles'][h+'profile']
     subFactions = orksdict[list(orksdict.keys())[0]][h+'rules'][h+'rule']
 
-    return parseXml(sharedEntries, sharedProfiles, subFactions)
+    f = open(datapath + 'Warhammer 40,000 Kill Team.gst', "r")
+    commonxml = f.read()
+    f.close()
 
-def parseXml(sharedEntries, sharedProfiles, subFactions):
-    profiles = {'Model':{}, 'Weapon':{}, 'Ability':{}, 'Wargear':{}, 'Sub-faction':{}}
+    commonDict = bf.data(fromstring(commonxml))
+
+    specialistProfiles = commonDict[s+'gameSystem'][s+'sharedProfiles'][s+'profile']
+
+    profiles = {'Model':{}, 'Weapon':{}, 'Ability':{}, 'Wargear':{}, 'Sub-faction':{}, 'Psychic Power':{}}
 
     for entry in sharedEntries:
         if (h+'profiles' in entry.keys()):
@@ -26,13 +33,13 @@ def parseXml(sharedEntries, sharedProfiles, subFactions):
             if (isinstance(profiledata, list) == False):
                 profiledata = [profiledata]
             for p in profiledata:
-                profile = parseProfile(p, entryName)
+                profile = parseProfile(p, h, entryName)
                 profiles[profile['typeName']][profile['name']] = profile
         else:
             continue
 
     for p in sharedProfiles:
-        profile = parseProfile(p)
+        profile = parseProfile(p, h)
         profiles[profile['typeName']][profile['name']] = profile
 
     for r in subFactions:
@@ -42,15 +49,19 @@ def parseXml(sharedEntries, sharedProfiles, subFactions):
         name = name[start:end]
         profiles['Sub-faction'][name] = {'name': name, 'Description' : r[h+'description']['$']}
 
+    for c in specialistProfiles:
+        profile = parseProfile(c, s)
+        profiles[profile['typeName']][profile['name']] = profile
+
     return profiles
 
-def parseProfile(p, entryName=''):
+def parseProfile(p, header, entryName=''):
     name = p['@name']
     typeName = p['@typeName']
     if (typeName == 'Model' and entryName):
         name = entryName
     pid = p['@id']
-    characteristics = p[h+'characteristics'][h+'characteristic']
+    characteristics = p[header+'characteristics'][header+'characteristic']
     if (isinstance(characteristics, list) == False):
         characteristics = [characteristics]
     stats = {}

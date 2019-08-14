@@ -2,21 +2,29 @@ Model: Skitarii Vanguard Gunner
 Weapon: Plasma caliver - Supercharge
 Weapon: Plasma caliver - Standard
 Ability: Bionics
+Specialist: Leader
+Sub-faction: Stygies VIII
 -
 Model: Skitarii Ranger
 Weapon: Galvanic rifle
 Ability: Bionics
+Specialist: Demolitions
+Sub-faction: Stygies VIII
 -
 Model: Skitarii Vanguard
 Weapon: Radium carbine
 Ability: Bionics
+Sub-faction: Stygies VIII
 -
 Model: Skitarii Ranger Alpha
 Weapon: Galvanic rifle
 Ability: Bionics
+Sub-faction: Stygies VIII
 -
 Model: Sicarian Infiltrator
 Weapon: Power sword
 Weapon: Stubcarabine
 Ability: Bionics
 Ability: Neurostatic Aura
+Sub-faction: Stygies VIII
+Ability: Relentless

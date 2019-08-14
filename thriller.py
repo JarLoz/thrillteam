@@ -138,7 +138,7 @@ def createCard(ork):
 
 
 def createOrks(faction, listfilename, data):
-    orkdata = parse(data + faction + '.cat')
+    orkdata = parse(data, faction)
     orklist = readlist(listfilename)
 
     orks = []
