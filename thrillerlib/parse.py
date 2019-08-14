@@ -3,8 +3,8 @@ from xml.etree.ElementTree import fromstring
 
 #header for some xml bullshit
 h = '{http://www.battlescribe.net/schema/catalogueSchema}'
-def parse():
-    f = open("../wh40k-killteam/Orks.cat", "r")
+def parse(datafilename):
+    f = open(datafilename, "r")
     orksxml = f.read()
     f.close()
 
@@ -12,11 +12,12 @@ def parse():
 
     sharedEntries = orksdict[list(orksdict.keys())[0]][h+'sharedSelectionEntries'][h+'selectionEntry']
     sharedProfiles = orksdict[list(orksdict.keys())[0]][h+'sharedProfiles'][h+'profile']
+    subFactions = orksdict[list(orksdict.keys())[0]][h+'rules'][h+'rule']
 
-    return parseSharedEntries(sharedEntries, sharedProfiles)
+    return parseXml(sharedEntries, sharedProfiles, subFactions)
 
-def parseSharedEntries(sharedEntries, sharedProfiles):
-    profiles = {'Model':{}, 'Weapon':{}, 'Ability':{}, 'Wargear':{}}
+def parseXml(sharedEntries, sharedProfiles, subFactions):
+    profiles = {'Model':{}, 'Weapon':{}, 'Ability':{}, 'Wargear':{}, 'Sub-faction':{}}
 
     for entry in sharedEntries:
         if (h+'profiles' in entry.keys()):
@@ -33,6 +34,13 @@ def parseSharedEntries(sharedEntries, sharedProfiles):
     for p in sharedProfiles:
         profile = parseProfile(p)
         profiles[profile['typeName']][profile['name']] = profile
+
+    for r in subFactions:
+        name = r['@name']
+        start = name.find('(') + 1
+        end = name.find(')')
+        name = name[start:end]
+        profiles['Sub-faction'][name] = {'name': name, 'Description' : r[h+'description']['$']}
 
     return profiles
 

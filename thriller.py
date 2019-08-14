@@ -1,35 +1,45 @@
-from thriller.parse import parse
-from thriller.readlist import readlist
-from thriller.ork import Ork
+from thrillerlib.parse import parse
+from thrillerlib.readlist import readlist
+from thrillerlib.ork import Ork
 from pgmagick import Image, DrawableText
 from textwrap import wrap
+import argparse
 
 def main():
-    orks = createOrks()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("faction", help="Name of the faction in the army list")
+    parser.add_argument("list", help="Filename of the army list")
+    parser.add_argument("data", help="Path to folder containing the battlescribe data files")
+    args = parser.parse_args()
+    orks = createOrks(args.faction, args.list, args.data)
     for o in orks:
         createCard(o)
 
 def createCard(ork):
     template = Image('cardtemplate.png')
-    name = ork.name()
+    name = ork.name
     abilities = {}
     # Name 
     template.fontPointsize(50)
-    drawableName = DrawableText(38, 84, name)
+    nameString = name
+    if (ork.specialist != None):
+        nameString += ", " + ork.specialist
+    drawableName = DrawableText(38, 84, nameString)
     template.draw(drawableName)
 
     # Stats
 
     template.fontPointsize(45)
 
-    template.draw(DrawableText(52, 185, ork.stats()['M']))
-    template.draw(DrawableText(135, 185, ork.stats()['WS']))
-    template.draw(DrawableText(230, 185, ork.stats()['BS']))
-    template.draw(DrawableText(330, 185, ork.stats()['S']))
-    template.draw(DrawableText(416, 185, ork.stats()['T']))
-    template.draw(DrawableText(485, 185, ork.stats()['A']))
-    template.draw(DrawableText(566, 185, ork.stats()['Ld']))
-    template.draw(DrawableText(665, 185, ork.stats()['Sv']))
+    template.draw(DrawableText(52, 185, ork.stats['M']))
+    template.draw(DrawableText(135, 185, ork.stats['WS']))
+    template.draw(DrawableText(230, 185, ork.stats['BS']))
+    template.draw(DrawableText(330, 185, ork.stats['S']))
+    template.draw(DrawableText(416, 185, ork.stats['T']))
+    template.draw(DrawableText(485, 185, ork.stats['A']))
+    template.draw(DrawableText(566, 185, ork.stats['W']))
+    template.draw(DrawableText(662, 185, ork.stats['Ld']))
+    template.draw(DrawableText(783, 185, ork.stats['Sv']))
 
     # Weapons
 
@@ -43,7 +53,12 @@ def createCard(ork):
             start = weaponName.find('(') + 1
             end = weaponName.find(')')
             weaponName = weaponName[start:end]
-        template.draw(DrawableText(43, weaponY, weaponName))
+
+        weaponNameStrings = wrap(weaponName, 14)
+        for i in range(min(len(weaponNameStrings), 2)):
+            template.draw(DrawableText(43, weaponY, weaponNameStrings[i]))
+            if (i+1 < len(weaponNameStrings)):
+                weaponY += 35
         template.draw(DrawableText(295, weaponY, weapon['stats']['Range']))
         template.draw(DrawableText(445, weaponY, weapon['stats']['Type']))
         if (weapon['stats']['S'] == 'User'):
@@ -82,10 +97,16 @@ def createCard(ork):
 
     abilityNames = []
 
+    if (ork.subFaction != None):
+        abilityName = ork.subFaction['name']
+        abilityNames.append(abilityName)
+        abilities[abilityName] = ork.subFaction['Description']
+
     for ability in ork.abilities:
         abilityName = ability['name']
         abilityNames.append(abilityName)
         abilities[abilityName] = ability['stats']['Description']
+
 
     abilityString = "Abilities: " + ", ".join(abilityNames)
     abilityStrings = wrap(abilityString, 50)
@@ -105,6 +126,8 @@ def createCard(ork):
     # Backside of the card
     abilityY = 117
     abilityOffset = 35
+
+    # Abilities, also from weapons
     for abilityName in abilities.keys():
         abilityStrings = wrap(abilityName + ": " + abilities[abilityName], 60)
         for string in abilityStrings:
@@ -114,9 +137,9 @@ def createCard(ork):
     template.write(name +  '-back.png')
 
 
-def createOrks():
-    orkdata = parse()
-    orklist = readlist()
+def createOrks(faction, listfilename, data):
+    orkdata = parse(data + faction + '.cat')
+    orklist = readlist(listfilename)
 
     orks = []
     for o in orklist:
@@ -132,10 +155,16 @@ def createOrks():
         if ('Wargear' in o.keys()):
             for wargear in o['Wargear']:
                 ork.addWargear(orkdata['Wargear'][wargear])
+        if ('Specialist' in o.keys()):
+            for specialist in o['Specialist']:
+                ork.setSpecialist(specialist)
+        if ('Sub-faction' in o.keys()):
+            for sub in o['Sub-faction']:
+                ork.setSubFaction(orkdata['Sub-faction'][sub])
 
         orks.append(ork)
 
     return orks
 
 if (__name__ == "__main__"):
-    main
+    main()

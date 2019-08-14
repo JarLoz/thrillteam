@@ -1,0 +1,22 @@
+Model: Skitarii Vanguard Gunner
+Weapon: Plasma caliver - Supercharge
+Weapon: Plasma caliver - Standard
+Ability: Bionics
+-
+Model: Skitarii Ranger
+Weapon: Galvanic rifle
+Ability: Bionics
+-
+Model: Skitarii Vanguard
+Weapon: Radium carbine
+Ability: Bionics
+-
+Model: Skitarii Ranger Alpha
+Weapon: Galvanic rifle
+Ability: Bionics
+-
+Model: Sicarian Infiltrator
+Weapon: Power sword
+Weapon: Stubcarabine
+Ability: Bionics
+Ability: Neurostatic Aura

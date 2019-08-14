@@ -1,5 +1,5 @@
-def readlist():
-    f = open("orklist.txt", "r")
+def readlist(listfilename):
+    f = open(listfilename, "r")
     lines = f.readlines()
     f.close()
 
