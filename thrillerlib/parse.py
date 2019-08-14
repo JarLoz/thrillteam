@@ -74,6 +74,3 @@ def parseProfile(p, header, entryName=''):
         except:
             continue
     return ({'name': name, 'typeName': typeName, 'id': pid, 'stats': stats})
-
-if (__name__ == "__main__"):
-    main()

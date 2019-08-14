@@ -15,6 +15,35 @@ def main():
     for o in orks:
         createCard(o)
 
+def createOrks(faction, listfilename, data):
+    orkdata = parse(data, faction)
+    orklist = readlist(listfilename)
+
+    orks = []
+    for o in orklist:
+        model = orkdata['Model'][o['Model']]
+        ork = Ork(model)
+
+        if ('Weapon' in o.keys()):
+            for weapon in o['Weapon']:
+                ork.addWeapon(orkdata['Weapon'][weapon])
+        if ('Ability' in o.keys()):
+            for ability in o['Ability']:
+                ork.addAbility(orkdata['Ability'][ability])
+        if ('Wargear' in o.keys()):
+            for wargear in o['Wargear']:
+                ork.addWargear(orkdata['Wargear'][wargear])
+        if ('Specialist' in o.keys()):
+            for specialist in o['Specialist']:
+                ork.setSpecialist(specialist)
+        if ('Sub-faction' in o.keys()):
+            for sub in o['Sub-faction']:
+                ork.setSubFaction(orkdata['Sub-faction'][sub])
+
+        orks.append(ork)
+
+    return orks
+
 def createCard(ork):
     template = Image('cardtemplate.png')
     name = ork.name
@@ -24,8 +53,7 @@ def createCard(ork):
     nameString = name
     if (ork.specialist != None):
         nameString += ", " + ork.specialist
-    drawableName = DrawableText(38, 84, nameString)
-    template.draw(drawableName)
+    template.draw(DrawableText(38, 84, nameString))
 
     # Stats
 
@@ -135,36 +163,6 @@ def createCard(ork):
             abilityY += abilityOffset
         abilityY += 10
     template.write(name +  '-back.png')
-
-
-def createOrks(faction, listfilename, data):
-    orkdata = parse(data, faction)
-    orklist = readlist(listfilename)
-
-    orks = []
-    for o in orklist:
-        model = orkdata['Model'][o['Model']]
-        ork = Ork(model)
-
-        if ('Weapon' in o.keys()):
-            for weapon in o['Weapon']:
-                ork.addWeapon(orkdata['Weapon'][weapon])
-        if ('Ability' in o.keys()):
-            for ability in o['Ability']:
-                ork.addAbility(orkdata['Ability'][ability])
-        if ('Wargear' in o.keys()):
-            for wargear in o['Wargear']:
-                ork.addWargear(orkdata['Wargear'][wargear])
-        if ('Specialist' in o.keys()):
-            for specialist in o['Specialist']:
-                ork.setSpecialist(specialist)
-        if ('Sub-faction' in o.keys()):
-            for sub in o['Sub-faction']:
-                ork.setSubFaction(orkdata['Sub-faction'][sub])
-
-        orks.append(ork)
-
-    return orks
 
 if (__name__ == "__main__"):
     main()
