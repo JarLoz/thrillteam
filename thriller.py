@@ -45,7 +45,7 @@ def createOrks(faction, listfilename, data):
     return orks
 
 def createCard(ork):
-    template = Image('cardtemplate.png')
+    template = Image('templates/cardtemplate.png')
     name = ork.name
     abilities = {}
     # Name 
@@ -148,7 +148,7 @@ def createCard(ork):
 
     template.write(name+'.png')
 
-    template = Image('cardtemplate-back.png')
+    template = Image('templates/cardtemplate-back.png')
     template.fontPointsize(30)
 
     # Backside of the card

@@ -1,22 +1,60 @@
+Model: Gretchin
+Weapon: Grot Blasta
+Specialist: Leader
+Ability: Resourceful
+-
+Model: Kommando Boss Nob
+Weapon: Power Klaw
+Weapon: Slugga
+Weapon: Stikkbombs
+Specialist: Veteran
+Ability: 'Ere We Go
+Ability: Grizzled
+Ability: Sneaky Gits
+Sub-faction: Evil Sunz
+-
+Model: Boss Nob (Boyz)
+Weapon: Big Choppa
+Weapon: Kombi-weapon
+Weapon: Kombi-weapon with Skorcha (Shoota)
+Weapon: Kombi-weapon with Skorcha (Skorcha)
+Weapon: Stikkbombs
+Specialist: Combat
+Ability: 'Ere We Go
+Ability: Expert Fighter
+Sub-faction: Evil Sunz
+-
+Model: Kommando
+Weapon: Choppa
+Weapon: Slugga
+Weapon: Stikkbombs
+Ability: 'Ere We Go
+Ability: Sneaky Gits
+Sub-faction: Evil Sunz
+-
+Model: Burna Boy
+Weapon: Burna (Melee)
+Weapon: Burna (Ranged)
+Weapon: Stikkbombs
+Specialist: Demolition
+Ability: 'Ere We Go
+Ability: Breacher
+Sub-faction: Evil Sunz
+-
+Model: Burna Boy
+Weapon: Burna (Melee)
+Weapon: Burna (Ranged)
+Weapon: Stikkbombs
+Ability: 'Ere We Go
+Sub-faction: Evil Sunz
+-
 Model: Ork Boy
 Weapon: Slugga
 Weapon: Choppa
 Ability: 'Ere We Go
-Specialist: Leader
 Sub-faction: Evil Sunz
 -
-Model: Nob
-Wargear: Cybork body
-Weapon: Slugga
-Weapon: Big Choppa
+Model: Ork Boy Gunner
+Weapon: Big Shoota
 Ability: 'Ere We Go
-Ability: Gitfinda Squig
--
-Model: Meganob
-Weapon: Kombi-weapon
-Weapon: Kombi-weapon with Skorcha (Shoota)
-Weapon: Kombi-weapon with Skorcha (Skorcha)
-Weapon: Power Klaw
-Weapon: Stikkbombs
-Ability: 'Ere We Go
-Ability: Keepin' Order
+Sub-faction: Evil Sunz
